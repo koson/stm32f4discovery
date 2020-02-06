@@ -30,9 +30,9 @@ int main(void) {
         }
         lastLed = nextLed;
         HAL_GPIO_TogglePin(LED_GPIO_PORT, nextLed);  // Turn LED on
-        HAL_Delay(1000);                             // Wait 1 sec
+        HAL_Delay(50);                             // Wait 1 sec
         HAL_GPIO_TogglePin(LED_GPIO_PORT, nextLed);  // Turn LED off
-        HAL_Delay(1000);                             // Wait 1 sec
+        HAL_Delay(10);                             // Wait 1 sec
     }
 }
 
