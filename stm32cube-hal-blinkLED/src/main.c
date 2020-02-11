@@ -29,7 +29,7 @@ int main(void) {
 
     while (1) {
         HAL_GPIO_TogglePin(LED_GPIO_PORT, LED_PIN); // Toggle LED state
-        HAL_Delay(1000); // Wait 1 sec
+        HAL_Delay(100); // Wait 1 sec
     }
 }
 

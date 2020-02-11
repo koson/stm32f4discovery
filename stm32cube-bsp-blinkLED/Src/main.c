@@ -100,7 +100,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
       BSP_LED_Toggle(LED6); // Blink LED LD6
-      HAL_Delay(1000); // Wait 1 sec
+      HAL_Delay(100); // Wait 1 sec
 
   }
   /* USER CODE END 3 */

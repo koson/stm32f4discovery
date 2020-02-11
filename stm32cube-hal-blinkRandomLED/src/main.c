@@ -6,41 +6,45 @@
 
 #define LED_GPIO_PORT GPIOD
 
-RNG_HandleTypeDef hrng;  // RNG definition
+RNG_HandleTypeDef hrng; // RNG definition
 
 void Error_Handler(void);
 void SystemClock_Config(void);
 void LED_Init(void);
 void RNG_Init(void);
 
-int main(void) {
+int main(void)
+{
     HAL_Init();
-    SystemClock_Config();  // Needed for correct working of RNG
+    SystemClock_Config(); // Needed for correct working of RNG
     LED_Init();
     RNG_Init();
 
     uint16_t leds[] = {GPIO_PIN_12, GPIO_PIN_13, GPIO_PIN_14, GPIO_PIN_15};
 
     uint16_t nextLed, lastLed = 0;
-    while (1) {
+    while (1)
+    {
         uint32_t randomNum;
         // Select a random LED, different from last one turned on
         while (HAL_RNG_GenerateRandomNumber(&hrng, &randomNum),
-               (nextLed = leds[randomNum % 4]) == lastLed) {
+               (nextLed = leds[randomNum % 4]) == lastLed)
+        {
         }
         lastLed = nextLed;
-        HAL_GPIO_TogglePin(LED_GPIO_PORT, nextLed);  // Turn LED on
-        HAL_Delay(50);                             // Wait 1 sec
-        HAL_GPIO_TogglePin(LED_GPIO_PORT, nextLed);  // Turn LED off
-        HAL_Delay(10);                             // Wait 1 sec
+        HAL_GPIO_TogglePin(LED_GPIO_PORT, nextLed); // Turn LED on
+        HAL_Delay(60);                              // Wait 1 sec
+        HAL_GPIO_TogglePin(LED_GPIO_PORT, nextLed); // Turn LED off
+        HAL_Delay(5);                               // Wait 1 sec
     }
 }
 
 /* Initialize LED */
-void LED_Init(void) {
+void LED_Init(void)
+{
     GPIO_InitTypeDef GPIO_InitStruct;
 
-    __HAL_RCC_GPIOD_CLK_ENABLE();  // Enable GPIO Port Clock
+    __HAL_RCC_GPIOD_CLK_ENABLE(); // Enable GPIO Port Clock
 
     // Configure GPIO pins for all user LEDs
     GPIO_InitStruct.Pin = GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
@@ -51,14 +55,17 @@ void LED_Init(void) {
 }
 
 /* Overriden method used by HAL_RNG_Init() */
-void HAL_RNG_MspInit(RNG_HandleTypeDef* rngHandle) {
-    if (rngHandle->Instance == RNG) {
+void HAL_RNG_MspInit(RNG_HandleTypeDef *rngHandle)
+{
+    if (rngHandle->Instance == RNG)
+    {
         __HAL_RCC_RNG_CLK_ENABLE();
     }
 }
 
 /* Initialize random generator */
-void RNG_Init(void) {
+void RNG_Init(void)
+{
     hrng.Instance = RNG;
     HAL_RNG_Init(&hrng);
 }
@@ -66,7 +73,8 @@ void RNG_Init(void) {
 /**
  * It handles System tick timer
  */
-void SysTick_Handler(void) {
+void SysTick_Handler(void)
+{
     // Feel free to uncomment the next two lines to get 10 times faster blinking
 
     // extern HAL_TickFreqTypeDef uwTickFreq;
@@ -79,7 +87,8 @@ void SysTick_Handler(void) {
  * @brief System Clock Configuration
  * @retval None
  */
-void SystemClock_Config(void) {
+void SystemClock_Config(void)
+{
     RCC_OscInitTypeDef RCC_OscInitStruct = {0};
     RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
@@ -98,7 +107,8 @@ void SystemClock_Config(void) {
     RCC_OscInitStruct.PLL.PLLN = 50;
     RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
     RCC_OscInitStruct.PLL.PLLQ = 7;
-    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
+    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+    {
         Error_Handler();
     }
     /** Initializes the CPU, AHB and APB busses clocks
@@ -110,7 +120,8 @@ void SystemClock_Config(void) {
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV8;
     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV4;
 
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK) {
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+    {
         Error_Handler();
     }
 }
